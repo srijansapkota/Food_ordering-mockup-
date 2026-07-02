@@ -1,15 +1,23 @@
+import { showToast } from "@/components/Toast";
 import useItemsStore from "@/store/useItemsStore";
 import { Item } from "@/types/types.storage";
+import { useFocusEffect } from "expo-router/build/react-navigation";
+import { useCallback } from "react";
 import { FlatList, Image, Pressable, Text, ToastAndroid, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CartScreen() {
+  useFocusEffect(
+    useCallback (() => {
+      useItemsStore.getState().pruneExpired();
+    }, [])
+  );
   const { items, reduceItem, addItem } = useItemsStore()
   const totalItems = items.reduce((sum, item) => sum + (item.quantity ?? 0), 0);
 
   const handleSubstraction = (id: number) => {
     reduceItem(id)
-    ToastAndroid.show('Item removed from cart', ToastAndroid.BOTTOM)
+    showToast("Item removed from the cart")
   }
 
   const handleAddition = (item: Item) => {
@@ -18,8 +26,10 @@ export default function CartScreen() {
       price: item.price,
       title: item.title,
       category: item.category,
+      addedAt: Date.now(),
     })
-  }
+    }
+  
 
   return (
     <SafeAreaView className="flex-1">
@@ -51,6 +61,9 @@ export default function CartScreen() {
               </Text>
               <Text className="text-lg mt-1 text-[#895100]">View all</Text>
             </View>
+            <Text className="px-5 py-1 mb-1 text-sm font-bold">
+              Cart items would be <Text className="text-red-800">deleted</Text> after <Text className="text-red-800">30 mins.</Text>
+            </Text>
           </View>
         }
         data={items}

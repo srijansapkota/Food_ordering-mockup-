@@ -2,8 +2,9 @@ export type Item = {
   id: number,
   title: string,
   price: string,
-  category: string,
+  category: number,
   quantity?: number,
+  addedAt?: number
 };
 
 export type ItemsState = {
@@ -11,4 +12,5 @@ export type ItemsState = {
   addItem: (item: Item) => void;
   reduceItem: (id: number) => void;
   resetItems: () => void;
-};
+  pruneExpired: () => void;
+}

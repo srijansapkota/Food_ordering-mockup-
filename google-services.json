@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1092547396446",
+    "project_id": "billing-demo-aee4a",
+    "storage_bucket": "billing-demo-aee4a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092547396446:android:9c911acc0f5f709126c5cf",
+        "android_client_info": {
+          "package_name": "com.sri_jan.billingdemo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5NeYy9D2G0vWreLYCkdTd25Y0zSRvs1k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
