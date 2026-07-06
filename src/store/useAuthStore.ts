@@ -7,7 +7,21 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from '@react-native-firebase/auth';
-import { AuthState } from '@/types/types.userState';
+import { doc, getDoc, getFirestore } from '@react-native-firebase/firestore';
+import { AuthState, Role } from '@/types/types.userState';
+
+const db = getFirestore();
+
+const fetchRole = async (uid: string): Promise<Role> => {
+  try {
+    const snap = await getDoc(doc(db, 'users', uid));
+    const role = snap.exists() ? (snap.data()?.role as Role | undefined) : undefined;
+    return role === 'admin' ? 'admin' : 'customer';
+  } catch (error) {
+    console.error('fetchRole error:', error);
+    return 'customer';
+  }
+};
 
 const useAuthStore = create<AuthState>()(
   persist(
@@ -20,8 +34,9 @@ const useAuthStore = create<AuthState>()(
         try {
           const userCredential = await signInWithEmailAndPassword(getAuth(), email, password);
           const { uid, email: userEmail, displayName } = userCredential.user;
+          const role = await fetchRole(uid);
           set({
-            user: { uid, email: userEmail, displayName },
+            user: { uid, email: userEmail, displayName, role },
             isLoggedIn: true,
             isLoading: false,
           });
@@ -36,7 +51,7 @@ const useAuthStore = create<AuthState>()(
           const userCredential = await createUserWithEmailAndPassword(getAuth(), email, password);
           const { uid, email: userEmail, displayName } = userCredential.user;
           set({
-            user: { uid, email: userEmail, displayName },
+            user: { uid, email: userEmail, displayName, role: 'customer' },
             isLoggedIn: true,
             isLoading: false,
           });

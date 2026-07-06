@@ -6,6 +6,11 @@ import {  router } from "expo-router";
 import { useProfileScreen } from "@/hooks/useProfileScreen";
 import useAuthStore from "@/store/useAuthStore";
 import { useOrderInfo } from "@/hooks/useOrderInfo";
+import { useUnseenCount } from "@/hooks/useUnseenCount";
+import { NotificationBell } from "@/components/NotificationBell";
+import { useEditProfile } from "@/hooks/useEditProfile";
+import { EditProfileButton } from "@/components/EditProfileButton";
+import { EditProfileModal } from "@/components/EditProfileModal";
 
 
   
@@ -14,8 +19,13 @@ const ProfileScreen = () => {
   const user = useAuthStore.getState().user;
   const u_id = user?.uid
   const [notificationsOn, setNotificationsOn] = useState(true);
-  const { name, address, phoneno, loading } = useProfileScreen()
-  const { completed, pending, cancelled, error } = useOrderInfo(u_id);
+  const { name, address, phoneno, loading, applyLocalUpdate } = useProfileScreen()
+  const { delivered, pending, cancelled, error } = useOrderInfo(u_id);
+  const { hasUnseen, acknowledge } = useUnseenCount(
+    `order-status-seen:${u_id ?? 'anon'}`,
+    delivered + cancelled
+  );
+  const editProfile = useEditProfile(u_id, { name, address, phoneno }, applyLocalUpdate);
    if (loading) return (
      <SafeAreaView>
        <ActivityIndicator size={"large"} />
@@ -23,15 +33,18 @@ const ProfileScreen = () => {
    )
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-row items-center px-5 pt-4 pb-2 gap-3">
-        <Image
-          source={require("../../../assets/images/Icon.webp")}
-          className="w-10 h-10 rounded-xl"
-          resizeMode="cover"
-        />
-        <Text className="text-2xl font-bold text-[#895100] tracking-tight">
-          QuickBites
-        </Text>
+      <View className="flex-row items-center justify-between px-5 pt-4 pb-2">
+        <View className="flex-row items-center gap-3">
+          <Image
+            source={require("../../../assets/images/Icon.webp")}
+            className="w-10 h-10 rounded-xl"
+            resizeMode="cover"
+          />
+          <Text className="text-2xl font-bold text-[#895100] tracking-tight">
+            QuickBites
+          </Text>
+        </View>
+        <NotificationBell hasUnseen={hasUnseen} onPress={acknowledge} />
       </View>
       <ScrollView
         className="flex-1"
@@ -49,7 +62,10 @@ const ProfileScreen = () => {
 
         {/* Personal info */}
         <View className="px-5 pt-2 pb-2">
-          <Text className="text-lg font-semibold text-gray-900 mb-3">Personal info</Text>
+          <View className="flex-row justify-between items-center mb-3">
+            <Text className="text-lg font-semibold text-gray-900">Personal info</Text>
+            <EditProfileButton onPress={editProfile.open} />
+          </View>
           <View className="bg-gray-50 rounded-2xl border border-[#895100] p-4 gap-4">
             <View className="flex-row justify-between">
               <View className="flex-1 mr-3">
@@ -78,8 +94,8 @@ const ProfileScreen = () => {
           </View>
           <View className="bg-gray-50 rounded-2xl border border-[#895100] p-4 flex-row justify-between">
             <View className="items-center flex-1">
-              <Text className="text-2xl font-bold text-gray-900">{completed}</Text>
-              <Text className="text-xs text-gray-500 mt-1">Total</Text>
+              <Text className="text-2xl font-bold text-gray-900">{delivered}</Text>
+              <Text className="text-xs text-gray-500 mt-1">Delivered</Text>
             </View>
             <View className="items-center flex-1 border-l border-r border-gray-200">
               <Text className="text-2xl font-bold text-[#895100]">{pending}</Text>
@@ -119,11 +135,27 @@ const ProfileScreen = () => {
 
         {/* Logout */}
         <View className="px-5 pt-8">
-          <Pressable className="items-center justify-center rounded-full py-4 bg-[#895100]">
+          <Pressable
+            className="items-center justify-center rounded-full py-4 bg-[#895100]"
+            onPress={() => useAuthStore.getState().signout()}
+          >
             <Text className="text-white text-base font-bold">Log out</Text>
           </Pressable>
         </View>
       </ScrollView>
+      <EditProfileModal
+        isVisible={editProfile.isVisible}
+        onClose={editProfile.close}
+        name={editProfile.name}
+        setName={editProfile.setName}
+        address={editProfile.address}
+        setAddress={editProfile.setAddress}
+        phoneno={editProfile.phoneno}
+        setPhoneno={editProfile.setPhoneno}
+        errors={editProfile.errors}
+        isSubmitting={editProfile.isSubmitting}
+        onSubmit={editProfile.submit}
+      />
     </SafeAreaView>
   );
  };

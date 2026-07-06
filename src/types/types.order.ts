@@ -1,6 +1,6 @@
 import { Timestamp } from "@react-native-firebase/firestore";
 
-export type ItemStatus = 'pending' | 'preparing' | 'delivered' | 'cancelled';
+export type ItemStatus = 'pending' | 'delivered' | 'cancelled';
 
 export type OrderItem = {
   menu_id: number;
@@ -17,4 +17,3 @@ export type Order = {
   items: OrderItem[];
   createdAt: Timestamp;
 };
-

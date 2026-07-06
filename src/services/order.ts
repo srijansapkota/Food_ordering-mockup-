@@ -4,15 +4,26 @@ import {
   addDoc,
   Timestamp,
   getDoc,
-  getDocs,
+  doc,
   query,
   where,
-  doc,
+  onSnapshot,
+  updateDoc,
 } from '@react-native-firebase/firestore';
 import { Item } from '@/types/types.storage';
-import { OrderItem } from '@/types/types.order';
+import { ItemStatus, Order, OrderItem } from '@/types/types.order';
 
 const db = getFirestore();
+
+// Thrown when checkout is attempted without required profile info, so
+// callers (e.g. the cart screen) can show a specific "complete your
+// profile" prompt instead of a generic failure toast.
+export class MissingProfileInfoError extends Error {
+  constructor() {
+    super('Fill in your info to place an order');
+    this.name = 'MissingProfileInfoError';
+  }
+}
 
 const hasFilledRequiredInfo = (userData: Record<string, any>) => {
   return Boolean(userData.name && userData.phoneno && userData.address);
@@ -28,7 +39,7 @@ export const placeOrder = async (consumerId: string, cartItems: Item[]): Promise
 
   const userSnap = await getDoc(doc(db, 'users', consumerId));
   if (!userSnap.exists() || !hasFilledRequiredInfo(userSnap.data())) {
-    throw new Error('Fill in your info to place an order');
+    throw new MissingProfileInfoError();
   }
 
   const items: OrderItem[] = cartItems.map((item) => ({
@@ -53,14 +64,56 @@ export const placeOrder = async (consumerId: string, cartItems: Item[]): Promise
   }
 };
 
-export const fetchOrders = async (consumerId: string) => {
+/**
+ * Subscribes to a consumer's orders in realtime. Returns an unsubscribe
+ * function — callers must invoke it on cleanup (e.g. useEffect return).
+ */
+export const subscribeToOrders = (
+  consumerId: string,
+  onChange: (orders: Order[]) => void,
+  onError?: (error: Error) => void
+) => {
+  const q = query(collection(db, 'orders'), where('consumer_id', '==', consumerId));
+  return onSnapshot(
+    q,
+    (snap) => {
+      const orders = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Order));
+      onChange(orders);
+    },
+    (error) => {
+      console.error('subscribeToOrders error:', error);
+      onError?.(error);
+    }
+  );
+};
+
+/**
+ * Updates the status of a single item within an order. Firestore has no
+ * primitive for updating one element of an array field, so this reads the
+ * order, maps the matching item, and writes the whole items array back.
+ * Only admins can call this successfully — enforced by Firestore rules,
+ * not by this function.
+ */
+export const updateOrderItemStatus = async (
+  orderId: string,
+  menuId: number,
+  status: ItemStatus
+): Promise<void> => {
+  const orderRef = doc(db, 'orders', orderId);
+  const snap = await getDoc(orderRef);
+  if (!snap.exists()) {
+    throw new Error('Order not found');
+  }
+
+  const order = snap.data() as Order;
+  const updatedItems = order.items.map((item) =>
+    item.menu_id === menuId ? { ...item, status } : item
+  );
+
   try {
-    const snap = await getDocs(
-      query(collection(db, 'orders'), where('consumer_id', '==', consumerId))
-    );
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    await updateDoc(orderRef, { items: updatedItems });
   } catch (error) {
-    console.error('fetchOrders error:', error);
+    console.error('updateOrderItemStatus error:', error);
     throw error;
   }
 };

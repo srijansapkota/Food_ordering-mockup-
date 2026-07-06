@@ -4,10 +4,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { handleCartItems } from "@/hooks/handleCartItems";
 import { getMenuImageUrl } from "@/lib/cloudinary";
 import { CartListHeader } from "@/components/CartListHeader";
+import { ProfileRequiredModal } from "@/components/ProfileRequiredModal";
 
 export default function CartScreen() {
   const items = useItemsStore((state) => state.items);
-  const { totalItems, handleSubstraction, handleAddition, handleCheckout, isSubmitting } = handleCartItems();
+  const {
+    totalItems,
+    handleSubstraction,
+    handleAddition,
+    handleCheckout,
+    isSubmitting,
+    showProfileRequiredModal,
+    closeProfileRequiredModal,
+  } = handleCartItems();
 
   return (
     <SafeAreaView className="flex-1">
@@ -62,6 +71,11 @@ export default function CartScreen() {
           </Pressable>
         </View>
       )}
+
+      <ProfileRequiredModal
+        isVisible={showProfileRequiredModal}
+        onClose={closeProfileRequiredModal}
+      />
     </SafeAreaView>
   );
 }

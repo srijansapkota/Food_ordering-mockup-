@@ -1,5 +1,5 @@
 import { showToast } from "@/components/Toast";
-import { placeOrder } from "@/services/order";
+import { MissingProfileInfoError, placeOrder } from "@/services/order";
 import useAuthStore from "@/store/useAuthStore";
 import useItemsStore from "@/store/useItemsStore";
 import { Item } from "@/types/types.storage";
@@ -8,6 +8,7 @@ import { useState } from "react";
 export const handleCartItems = () => {
   const { items, reduceItem, addItem } = useItemsStore()
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showProfileRequiredModal, setShowProfileRequiredModal] = useState(false);
   const totalItems = items.reduce((sum, item) => sum + (item.quantity ?? 0), 0);
 
   const handleSubstraction = (id: number) => {
@@ -41,17 +42,26 @@ export const handleCartItems = () => {
       useItemsStore.getState().resetItems();
       showToast("Order placed successfully");
     } catch (error) {
-      showToast("Failed to place order. Please try again.");
+      if (error instanceof MissingProfileInfoError) {
+        setShowProfileRequiredModal(true);
+      } else {
+        showToast("Failed to place order. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }
   }
+
+  const closeProfileRequiredModal = () => setShowProfileRequiredModal(false);
+
   return {
     totalItems,
     handleSubstraction,
     handleAddition,
     handleCheckout,
     isSubmitting,
-    items
+    items,
+    showProfileRequiredModal,
+    closeProfileRequiredModal,
   };
 }

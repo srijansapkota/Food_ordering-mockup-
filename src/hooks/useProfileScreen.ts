@@ -33,5 +33,12 @@ export const useProfileScreen =  () => {
     }
     fetchData();
   }, []);
-  return { ...profileData, loading }
+
+  // Lets callers (e.g. the edit-profile modal) reflect a successful save
+  // immediately, without waiting for a remount/refetch.
+  const applyLocalUpdate = (update: ProfileData) => {
+    setProfileData((prev) => ({ ...prev, ...update }))
+  }
+
+  return { ...profileData, loading, applyLocalUpdate }
 }

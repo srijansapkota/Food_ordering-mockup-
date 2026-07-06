@@ -7,21 +7,30 @@ import '../global.css';
 
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
-  const { isLoggedIn, isLoading } = useAuthStore();
+  const { isLoggedIn, isLoading, user } = useAuthStore();
   const segments = useSegments();
   useEffect(() => {
     if (!isLoading) {
       SplashScreen.hideAsync();
     }
   }, [isLoading]);
- 
+
   if (!isLoading) {
     const inAuthGroup = segments[0] === '(auth)';
+    const inAdminGroup = segments[0] === '(admin)';
+    const isAdmin = user?.role === 'admin';
+
     if (!isLoggedIn && !inAuthGroup) {
-      return <Redirect href="/(auth)/login"  />;
+      return <Redirect href="/(auth)/login" />;
     }
     if (isLoggedIn && inAuthGroup) {
-      return <Redirect href="/(tabs)" />;
+      return <Redirect href={isAdmin ? '/(admin)/' : '/(tabs)/'} />;
+    }
+    if (isLoggedIn && isAdmin && !inAdminGroup) {
+      return <Redirect href="/(admin)/" />;
+    }
+    if (isLoggedIn && !isAdmin && inAdminGroup) {
+      return <Redirect href="/(tabs)/" />;
     }
   }
 
@@ -30,6 +39,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(admin)" options={{ headerShown: false }} />
       </Stack>
       <Toast ref={toastRef} />
     </>

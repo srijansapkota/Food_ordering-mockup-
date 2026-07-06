@@ -1,28 +1,15 @@
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "@react-native-firebase/firestore";
 import { useEffect, useState } from "react";
-
-const db = getFirestore();
+import { subscribeToOrders } from "@/services/order";
 
 interface OrderCounts {
-  completed: number;
+  delivered: number;
   pending: number;
   cancelled: number;
 }
 
-interface OrderItem {
-  status: "completed" | "pending" | "cancelled" | string;
-  [key: string]: any;
-}
-
 export const useOrderInfo = (u_id: string | null | undefined) => {
   const [counts, setCounts] = useState<OrderCounts>({
-    completed: 0,
+    delivered: 0,
     pending: 0,
     cancelled: 0,
   });
@@ -35,47 +22,31 @@ export const useOrderInfo = (u_id: string | null | undefined) => {
       return;
     }
 
-    let isMounted = true;
+    setLoading(true);
+    setError(null);
 
-    const fetchOrderCounts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const ordersRef = collection(db, "orders");
-        const consumerQuery = query(ordersRef, where("consumer_id", "==", u_id));
-
-        const snap = await getDocs(consumerQuery);
-
-        const tally: OrderCounts = { completed: 0, pending: 0, cancelled: 0 };
-
-        snap.forEach((doc) => {
-          const data = doc.data();
-          const items: OrderItem[] = data.items || [];
-
-          items.forEach((item) => {
-            if (item.status === "completed") tally.completed += 1;
+    const unsubscribe = subscribeToOrders(
+      u_id,
+      (orders) => {
+        const tally: OrderCounts = { delivered: 0, pending: 0, cancelled: 0 };
+        orders.forEach((order) => {
+          order.items.forEach((item) => {
+            if (item.status === "delivered") tally.delivered += 1;
             else if (item.status === "pending") tally.pending += 1;
             else if (item.status === "cancelled") tally.cancelled += 1;
           });
         });
-
-        if (isMounted) setCounts(tally);
-      } catch (err) {
+        setCounts(tally);
+        setLoading(false);
+      },
+      (err) => {
         console.error("Error fetching order counts:", err);
-        if (isMounted) {
-          setError(err instanceof Error ? err : new Error(String(err)));
-        }
-      } finally {
-        if (isMounted) setLoading(false);
+        setError(err);
+        setLoading(false);
       }
-    };
+    );
 
-    fetchOrderCounts();
-
-    return () => {
-      isMounted = false;
-    };
+    return unsubscribe;
   }, [u_id]);
 
   return { ...counts, loading, error };

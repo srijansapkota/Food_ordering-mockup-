@@ -1,9 +1,8 @@
-import { useCallback, useState } from "react";
-import { FlatList,View, ToastAndroid } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, View, ToastAndroid } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect } from "expo-router/build/react-navigation";
 import useAuthStore from "@/store/useAuthStore";
-import { fetchOrders } from "@/services/order";
+import { subscribeToOrders } from "@/services/order";
 import { Order } from "@/types/types.order";
 import { OrderListHeader } from "@/components/OrderListHeader";
 import { OrderItemComponents } from "@/components/OrderItemComponents";
@@ -14,18 +13,25 @@ export default function OrdersScreen() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      const uid = useAuthStore.getState().user?.uid;
-      if (!uid) return;
+  useEffect(() => {
+    const uid = useAuthStore.getState().user?.uid;
+    if (!uid) return;
 
-      setLoading(true);
-      fetchOrders(uid)
-        .then((data) => setOrders(data as Order[]))
-        .catch(() => ToastAndroid.show("Failed to load orders", ToastAndroid.SHORT))
-        .finally(() => setLoading(false));
-    }, [])
-  );
+    setLoading(true);
+    const unsubscribe = subscribeToOrders(
+      uid,
+      (data) => {
+        setOrders(data);
+        setLoading(false);
+      },
+      () => {
+        ToastAndroid.show("Failed to load orders", ToastAndroid.SHORT);
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, []);
 
   return (
     <SafeAreaView className="flex-1">

@@ -1,7 +1,10 @@
+export type Role = 'admin' | 'customer';
+
 export type User = {
   uid: string;
   email: string | null;
   displayName?: string | null;
+  role?: Role;
 };
 export type AuthState = {
   user: User | null;
