@@ -5,6 +5,7 @@ export type Item = {
   category: number,
   quantity?: number,
   addedAt?: number
+  image: string;
 };
 
 export type ItemsState = {

@@ -3,7 +3,7 @@ import { getFirestore, collection, getDocs, query, where } from '@react-native-f
 const db = getFirestore();
 
 export type Category = { id: number; title: string };
-export type MenuItem = { id: number; title: string; price: string; category_id: number };
+export type MenuItem = { id: number; title: string; price: string; category_id: number; image: string };
 
 export const fetchCategories = async (): Promise<Category[]> => {
   try {

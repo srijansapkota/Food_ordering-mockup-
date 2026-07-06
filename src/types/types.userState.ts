@@ -11,4 +11,12 @@ export type AuthState = {
   signup: (email: string, password: string) => Promise<void>;
   signout: () => Promise<void>;
   setUser: (user: User | null) => void;
+  name?: string,
+  address?: string,
+  phoneno?: string,
 };
+export type ProfileData = {
+  name?: string;
+  address?: string;
+  phoneno?: string;
+}

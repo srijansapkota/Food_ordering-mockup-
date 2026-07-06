@@ -29,7 +29,7 @@ yarn-error.*
 # macOS
 .DS_Store
 *.pem
-
+.env
 # local env files
 .env*.local
 
@@ -43,3 +43,4 @@ example
 /android
 
 firebaseConfig.js
+google-services.json

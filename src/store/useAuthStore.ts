@@ -7,8 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from '@react-native-firebase/auth';
-import { AuthState } from '@/types/types.authstore';
-
+import { AuthState } from '@/types/types.userState';
 
 const useAuthStore = create<AuthState>()(
   persist(
@@ -57,6 +56,7 @@ const useAuthStore = create<AuthState>()(
         }
       },
       setUser: (user) => set({ user, isLoggedIn: !!user }),
+      updateUser: (name: string, address: string, phoneno: string) => set({ name, address, phoneno }),
     }),
     {
       name: 'auth-storage',
@@ -64,4 +64,5 @@ const useAuthStore = create<AuthState>()(
     }
   )
 );
+
 export default useAuthStore;

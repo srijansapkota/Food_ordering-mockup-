@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { fetchCategories, fetchMenu, Category, MenuItem } from '@/services/menu';
+import { fetchCategories, fetchMenu, Category, MenuItem } from '@/services/indexMenu';
 import { ToastAndroid } from 'react-native';
 
-export const useMenu = () => {
+export const useIndexMenu = () => {
   const [selectedId, setSelectedId] = useState(1);
   const [filterOptions, setFilterOptions] = useState<Category[]>([]);
   const [filteredMenu, setFilteredMenu] = useState<MenuItem[]>([]);

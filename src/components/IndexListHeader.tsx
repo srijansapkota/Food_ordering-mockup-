@@ -1,15 +1,19 @@
 import { LogOut, User } from "lucide-react-native";
-import { FlatList, Image, Pressable, Text, View } from "react-native";
+import { FlatList, Image, Pressable, Text, View, Modal } from "react-native";
 import useAuthStore from "@/store/useAuthStore";
-import { useState } from "react";
-import { seedData } from "@/services/seed";
+import { seedData } from "@/lib/seed";
 
-export const ListHeader = ({ selectedId, setSelectedId, filterOptions }: any) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+export const IndexListHeader = ({
+  selectedId,
+  setSelectedId,
+  filterOptions,
+  isDropdownOpen,
+  setIsDropdownOpen,
+}: any) => {
   const { signout } = useAuthStore();
-
   const dropdownOptions = [{ id: 1, icon: <LogOut />, label: "Logout" }];
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const closeDropdown = () => setIsDropdownOpen(false);
 
   return (
     <>
@@ -30,15 +34,30 @@ export const ListHeader = ({ selectedId, setSelectedId, filterOptions }: any) =>
         >
           <User size={24} color="#C17A2E" />
         </Pressable>
-        {isDropdownOpen && (
-          <View className="absolute top-16 right-5 bg-white rounded-xl shadow-lg overflow-hidden min-w-[140px] border border-gray-100">
+      </View>
+
+
+      <Modal
+        visible={isDropdownOpen}
+        transparent
+        animationType="fade"
+        onRequestClose={closeDropdown}
+      >
+        <Pressable
+          style={{ flex: 1 }}
+          onPress={closeDropdown}
+        >
+          <View className="absolute top-28 right-5 bg-white rounded-xl shadow-lg overflow-hidden min-w-[140px] border border-gray-100">
             <FlatList
               data={dropdownOptions}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <Pressable
                   className="flex-row items-center gap-2 px-4 py-3 active:bg-gray-50"
-                  onPress={() => signout()}
+                  onPress={() => {
+                    signout();
+                    closeDropdown();
+                  }}
                 >
                   {item.icon}
                   <Text className="text-sm font-medium text-gray-800">{item.label}</Text>
@@ -47,8 +66,8 @@ export const ListHeader = ({ selectedId, setSelectedId, filterOptions }: any) =>
               showsVerticalScrollIndicator={false}
             />
           </View>
-        )}
-      </View>
+        </Pressable>
+      </Modal>
 
       <View className="p-4">
         <Text className="text-xs font-semibold text-[#895100] tracking-widest uppercase mb-1">
@@ -61,7 +80,7 @@ export const ListHeader = ({ selectedId, setSelectedId, filterOptions }: any) =>
           <Text className="text-center">Seed</Text>
         </Pressable>
       </View>
-   
+
       <View>
         <FlatList
           data={filterOptions}
