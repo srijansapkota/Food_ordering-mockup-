@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, View, Pressable, ScrollView, Image, ActivityIndicator } from "react-native";
+import { Text, View, Pressable, ScrollView, Image, ActivityIndicator, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { User } from "lucide-react-native";
 import {  router } from "expo-router";
@@ -10,10 +10,9 @@ import { useUnseenCount } from "@/hooks/useUnseenCount";
 import { NotificationBell } from "@/components/NotificationBell";
 import { useEditProfile } from "@/hooks/useEditProfile";
 import { EditProfileButton } from "@/components/EditProfileButton";
-import { EditProfileModal } from "@/components/EditProfileModal";
+import { EditProfileModal } from "@/components/EditProfileModal"; 
 
 
-  
 
 const ProfileScreen = () => {
   const user = useAuthStore.getState().user;
@@ -133,7 +132,6 @@ const ProfileScreen = () => {
           </View>
         </View>
 
-
         <View className="px-5 pt-8">
           <Pressable
             className="items-center justify-center rounded-full py-4 bg-[#895100]"
@@ -155,7 +153,7 @@ const ProfileScreen = () => {
         errors={editProfile.errors}
         isSubmitting={editProfile.isSubmitting}
         onSubmit={editProfile.submit}
-      />
+        />
     </SafeAreaView>
   );
  };

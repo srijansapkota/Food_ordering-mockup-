@@ -1,4 +1,5 @@
-import { Modal, Pressable, Text, TextInput, View } from 'react-native';
+import { useState } from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from 'react-native';
 
 type EditProfileModalProps = {
   isVisible: boolean;
@@ -27,12 +28,19 @@ export function EditProfileModal({
   isSubmitting,
   onSubmit,
 }: EditProfileModalProps) {
+  if (!isVisible) return null;
+
   return (
-    <Modal visible={isVisible} transparent animationType="fade" onRequestClose={onClose}>
-      <View className="flex-1 bg-black/40 items-center justify-center px-5">
+    <View
+      style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000, elevation: 1000 }}
+      className="bg-black/40 items-center justify-center px-5"
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ width: '100%', alignItems: 'center' }}
+      >
         <View className="w-full bg-white rounded-2xl border border-[#895100] p-5">
           <Text className="text-lg font-bold text-gray-900 mb-4">Edit personal info</Text>
-
           <View className="gap-4">
             <View>
               <Text className="text-xs text-gray-500 mb-1">Name</Text>
@@ -44,7 +52,6 @@ export function EditProfileModal({
               />
               {errors.name && <Text className="text-xs text-red-600 mt-1">{errors.name}</Text>}
             </View>
-
             <View>
               <Text className="text-xs text-gray-500 mb-1">Address</Text>
               <TextInput
@@ -55,7 +62,6 @@ export function EditProfileModal({
               />
               {errors.address && <Text className="text-xs text-red-600 mt-1">{errors.address}</Text>}
             </View>
-
             <View>
               <Text className="text-xs text-gray-500 mb-1">Phone no.</Text>
               <TextInput
@@ -69,7 +75,6 @@ export function EditProfileModal({
               {errors.phoneno && <Text className="text-xs text-red-600 mt-1">{errors.phoneno}</Text>}
             </View>
           </View>
-
           <View className="flex-row gap-3 mt-6">
             <Pressable
               className="flex-1 items-center justify-center rounded-full py-3 bg-gray-100"
@@ -90,7 +95,7 @@ export function EditProfileModal({
             </Pressable>
           </View>
         </View>
-      </View>
-    </Modal>
+      </KeyboardAvoidingView>
+    </View>
   );
 }

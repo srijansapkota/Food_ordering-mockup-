@@ -4,7 +4,7 @@ import { AdminOrder, subscribeToAllOrders } from '@/services/adminOrders';
 import { updateOrderItemStatus } from '@/services/order';
 import { ItemStatus } from '@/types/types.order';
 
-export const useAdminOrders = () => {
+export default function useAdminOrders() {
   const [orders, setOrders] = useState<AdminOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [updatingKey, setUpdatingKey] = useState<string | null>(null);
