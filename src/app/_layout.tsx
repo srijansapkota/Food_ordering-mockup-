@@ -6,9 +6,11 @@ import Toast, { toastRef } from '@/components/Toast';
 import '../global.css';
 
 SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
   const { isLoggedIn, isLoading, user } = useAuthStore();
   const segments = useSegments();
+
   useEffect(() => {
     if (!isLoading) {
       SplashScreen.hideAsync();
@@ -24,13 +26,13 @@ export default function RootLayout() {
       return <Redirect href="/(auth)/login" />;
     }
     if (isLoggedIn && inAuthGroup) {
-      return <Redirect href={isAdmin ? '/(admin)/' : '/(tabs)/'} />;
+      return <Redirect href={isAdmin ? '/(admin)' : '/(tabs)'} />;
     }
     if (isLoggedIn && isAdmin && !inAdminGroup) {
-      return <Redirect href="/(admin)/" />;
+      return <Redirect href="/(admin)" />;
     }
     if (isLoggedIn && !isAdmin && inAdminGroup) {
-      return <Redirect href="/(tabs)/" />;
+      return <Redirect href="/(tabs)" />;
     }
   }
 

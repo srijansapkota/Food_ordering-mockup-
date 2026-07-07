@@ -25,11 +25,7 @@ const fetchProfile = async (uid: string): Promise<ProfileData> => {
   }
 };
 
-/**
- * Subscribes to every order in the system (admin-only, enforced by
- * Firestore rules) and joins each with its consumer's profile info for
- * display. Returns an unsubscribe function.
- */
+
 export const subscribeToAllOrders = (
   onChange: (orders: AdminOrder[]) => void,
   onError?: (error: Error) => void

@@ -51,7 +51,7 @@ const ProfileScreen = () => {
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Avatar + identity */}
+   
         <View className="items-center pt-8 pb-6">
           <View className="w-24 h-24 rounded-full bg-amber-50 border-2 border-[#895100] items-center justify-center mb-4">
             <User color="#895100" size={40} strokeWidth={1.5} />
@@ -60,7 +60,7 @@ const ProfileScreen = () => {
           <Text className="text-sm text-gray-500 mt-1">{user?.email}</Text>
         </View>
 
-        {/* Personal info */}
+       
         <View className="px-5 pt-2 pb-2">
           <View className="flex-row justify-between items-center mb-3">
             <Text className="text-lg font-semibold text-gray-900">Personal info</Text>
@@ -84,7 +84,7 @@ const ProfileScreen = () => {
           </View>
         </View>
 
-        {/* My orders */}
+ 
         <View className="px-5 pt-6 pb-2">
           <View className="flex-row justify-between items-center mb-3">
             <Text className="text-lg font-semibold text-gray-900">My orders</Text>
@@ -108,7 +108,7 @@ const ProfileScreen = () => {
           </View>
         </View>
 
-        {/* Notification preference */}
+    
         <View className="px-5 pt-6 pb-2">
           <View className="flex-row justify-between items-center bg-gray-50 rounded-2xl border border-[#895100] px-4 py-4">
             <Text className="text-sm font-medium text-gray-900">Notification preference</Text>
@@ -133,7 +133,7 @@ const ProfileScreen = () => {
           </View>
         </View>
 
-        {/* Logout */}
+
         <View className="px-5 pt-8">
           <Pressable
             className="items-center justify-center rounded-full py-4 bg-[#895100]"

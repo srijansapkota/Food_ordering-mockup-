@@ -15,9 +15,6 @@ import { ItemStatus, Order, OrderItem } from '@/types/types.order';
 
 const db = getFirestore();
 
-// Thrown when checkout is attempted without required profile info, so
-// callers (e.g. the cart screen) can show a specific "complete your
-// profile" prompt instead of a generic failure toast.
 export class MissingProfileInfoError extends Error {
   constructor() {
     super('Fill in your info to place an order');
@@ -61,13 +58,8 @@ export const placeOrder = async (consumerId: string, cartItems: Item[]): Promise
   } catch (error) {
     console.error('placeOrder error:', error);
     throw error;
-  }
+  } 
 };
-
-/**
- * Subscribes to a consumer's orders in realtime. Returns an unsubscribe
- * function — callers must invoke it on cleanup (e.g. useEffect return).
- */
 export const subscribeToOrders = (
   consumerId: string,
   onChange: (orders: Order[]) => void,
@@ -87,13 +79,6 @@ export const subscribeToOrders = (
   );
 };
 
-/**
- * Updates the status of a single item within an order. Firestore has no
- * primitive for updating one element of an array field, so this reads the
- * order, maps the matching item, and writes the whole items array back.
- * Only admins can call this successfully — enforced by Firestore rules,
- * not by this function.
- */
 export const updateOrderItemStatus = async (
   orderId: string,
   menuId: number,
