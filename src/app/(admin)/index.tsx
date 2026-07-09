@@ -2,8 +2,7 @@ import { ActivityIndicator, FlatList, Image, Pressable, Text, View } from 'react
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LogOut, User } from 'lucide-react-native';
 import  useAdminOrders  from './hooks/useAdminOrders';
-import { useUnseenCount } from '@/hooks/useUnseenCount';
-import { NotificationBell } from '@/components/NotificationBell';
+import { NotificationBell } from '@/components/General/NotificationBell';
 import useAuthStore from '@/store/useAuthStore';  
 import OrderCard from './components/OrderCard';
 
@@ -12,7 +11,7 @@ import OrderCard from './components/OrderCard';
 export default function AdminOrdersScreen() {
   const { orders, loading, updatingKey, markDelivered, cancelItem } = useAdminOrders();
   const liveOrders = orders.filter((order)=>order.items.some((item)=>item.status === 'pending'))
-  const { hasUnseen, acknowledge } = useUnseenCount('admin-orders-seen', orders.length);
+
 
   if (loading) {
     return (
@@ -40,7 +39,6 @@ export default function AdminOrdersScreen() {
         <Pressable onPress={() => useAuthStore.getState().signout()}>
           <LogOut size={24} color="#895100" />
         </Pressable>
-          <NotificationBell hasUnseen={hasUnseen} onPress={acknowledge} />
         </View>
       </View>
       <FlatList

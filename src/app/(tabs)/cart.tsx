@@ -3,8 +3,8 @@ import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { handleCartItems } from "@/hooks/handleCartItems";
 import { getMenuImageUrl } from "@/lib/cloudinary";
-import { CartListHeader } from "@/components/CartListHeader";
-import { ProfileRequiredModal } from "@/components/ProfileRequiredModal";
+import { CartListHeader } from "@/components/ListHeader/CartListHeader";
+import { ProfileRequiredModal } from "@/components/EditProfile/ProfileRequiredModal";
 
 export default function CartScreen() {
   const items = useItemsStore((state) => state.items);

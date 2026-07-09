@@ -2,8 +2,9 @@ import useAuthStore from '@/store/useAuthStore';
 import { Redirect, Stack, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import Toast, { toastRef } from '@/components/Toast';
+import Toast, { toastRef } from '@/components/General/Toast';
 import '../global.css';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,13 +38,13 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <KeyboardProvider>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(admin)" options={{ headerShown: false }} />
       </Stack>
       <Toast ref={toastRef} />
-    </>
+    </KeyboardProvider>
   );
 }

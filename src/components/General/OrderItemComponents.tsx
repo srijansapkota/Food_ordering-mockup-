@@ -6,7 +6,6 @@ export const OrderItemComponents = () => {
   
   const STATUS_STYLES: Record<ItemStatus, { bg: string; text: string; label: string }> = {
     pending: { bg: "bg-yellow-100", text: "text-yellow-700", label: "Pending" },
-    preparing: { bg: "bg-blue-100", text: "text-blue-700", label: "Preparing" },
     delivered: { bg: "bg-green-100", text: "text-green-700", label: "Delivered" },
     cancelled: { bg: "bg-red-100", text: "text-red-700", label: "Cancelled" },
   };

@@ -6,11 +6,9 @@ import {  router } from "expo-router";
 import { useProfileScreen } from "@/hooks/useProfileScreen";
 import useAuthStore from "@/store/useAuthStore";
 import { useOrderInfo } from "@/hooks/useOrderInfo";
-import { useUnseenCount } from "@/hooks/useUnseenCount";
-import { NotificationBell } from "@/components/NotificationBell";
 import { useEditProfile } from "@/hooks/useEditProfile";
-import { EditProfileButton } from "@/components/EditProfileButton";
-import { EditProfileModal } from "@/components/EditProfileModal"; 
+import { EditProfileButton } from "@/components/EditProfile/EditProfileButton";
+import { EditProfileModal } from "@/components/EditProfile/EditProfileModal";
 
 
 
@@ -20,10 +18,6 @@ const ProfileScreen = () => {
   const [notificationsOn, setNotificationsOn] = useState(true);
   const { name, address, phoneno, loading, applyLocalUpdate } = useProfileScreen()
   const { delivered, pending, cancelled, error } = useOrderInfo(u_id);
-  const { hasUnseen, acknowledge } = useUnseenCount(
-    `order-status-seen:${u_id ?? 'anon'}`,
-    delivered + cancelled
-  );
   const editProfile = useEditProfile(u_id, { name, address, phoneno }, applyLocalUpdate);
    if (loading) return (
      <SafeAreaView>
@@ -43,7 +37,6 @@ const ProfileScreen = () => {
             QuickBites
           </Text>
         </View>
-        <NotificationBell hasUnseen={hasUnseen} onPress={acknowledge} />
       </View>
       <ScrollView
         className="flex-1"

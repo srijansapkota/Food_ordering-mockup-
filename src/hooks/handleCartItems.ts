@@ -1,5 +1,5 @@
-import { showToast } from "@/components/Toast";
-import { MissingProfileInfoError, placeOrder } from "@/services/order";
+import { showToast } from "@/components/General/Toast";
+import { MissingProfileInfoError, placeOrder } from "@/services/placeOrder";
 import useAuthStore from "@/store/useAuthStore";
 import useItemsStore from "@/store/useItemsStore";
 import { Item } from "@/types/types.storage";

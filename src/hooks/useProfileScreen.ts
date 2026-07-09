@@ -1,4 +1,4 @@
-import { showToast } from "@/components/Toast";
+import { showToast } from "@/components/General/Toast";
 import useAuthStore from "@/store/useAuthStore";
 import { ProfileData } from "@/types/types.userState";
 import { collection, doc, getDoc, getFirestore } from "@react-native-firebase/firestore";

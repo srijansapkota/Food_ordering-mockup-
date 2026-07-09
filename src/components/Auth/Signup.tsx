@@ -40,7 +40,7 @@ export const Signup = () => {
       <View className="flex-row items-center justify-between px-5 pt-2">
         <View className="flex-row items-center gap-2">
           <Image
-            source={require('../../assets/images/Icon.webp')}
+            source={require('../../../assets/images/Icon.webp')}
             className="w-8 h-8"
             resizeMode="contain"
           />

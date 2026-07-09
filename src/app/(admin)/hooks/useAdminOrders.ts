@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
-import { AdminOrder, subscribeToAllOrders } from '@/services/adminOrders';
+import { AdminOrder, subscribeToAllOrders } from '@/app/(admin)/services/adminOrders';
 import { updateOrderItemStatus } from '@/services/order';
 import { ItemStatus } from '@/types/types.order';
 

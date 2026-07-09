@@ -28,7 +28,7 @@ export default function LogIn({
       <View className="flex-row items-center justify-between px-5 pt-4 pb-2">
         <View className="flex-row items-center gap-2">
           <Image
-            source={require('../../assets/images/Icon.webp')}
+            source={require('../../../assets/images/Icon.webp')}
             className="w-7 h-7"
             resizeMode="contain"
           />

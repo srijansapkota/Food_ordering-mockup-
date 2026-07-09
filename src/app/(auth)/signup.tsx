@@ -1,4 +1,4 @@
-import { Signup } from '@/components/Signup';
+import { Signup } from '@/components/Auth/Signup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SignupScreen() {

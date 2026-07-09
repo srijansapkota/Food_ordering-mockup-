@@ -4,8 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import useAuthStore from "@/store/useAuthStore";
 import { subscribeToOrders } from "@/services/order";
 import { Order } from "@/types/types.order";
-import { OrderListHeader } from "@/components/OrderListHeader";
-import { OrderItemComponents } from "@/components/OrderItemComponents";
+import { OrderListHeader } from "@/components/ListHeader/OrderListHeader";
+import { OrderItemComponents } from "@/components/General/OrderItemComponents";
 
 
 export default function OrdersScreen() {

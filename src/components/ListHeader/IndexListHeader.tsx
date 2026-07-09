@@ -20,7 +20,7 @@ export const IndexListHeader = ({
       <View className="flex-row items-center justify-between px-5 pt-4 pb-4">
         <View className="flex-row items-center gap-2">
           <Image
-            source={require("../../assets/images/Icon.webp")}
+            source={require("../../../assets/images/Icon.webp")}
             className="w-10 h-10 rounded-xl"
             resizeMode="cover"
           />

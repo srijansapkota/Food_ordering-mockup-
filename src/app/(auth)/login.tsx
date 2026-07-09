@@ -1,5 +1,5 @@
-import LogIn from '@/components/LogIn';
-import { showToast } from '@/components/Toast';
+import LogIn from '@/components/Auth/LogIn';
+import { showToast } from '@/components/General/Toast';
 import useAuthStore from '@/store/useAuthStore';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -23,7 +23,7 @@ export default function LoginScreen() {
         ? 'No account found with this email'
         : error.code === 'auth/wrong-password'
         ? 'Incorrect password'
-        : error.message || 'Login failed. Please try again.';
+        : error.message || 'Login failed. Please try again.' || error;
       showToast(message)
     }
   };

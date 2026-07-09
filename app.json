@@ -16,7 +16,9 @@
         "backgroundColor": "#E6F4FE"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.sri_jan.billingdemo"
+      "package": "com.sri_jan.billingdemo",
+      "edgeToEdgeEnabled": true,
+      "softwareKeyboardLayoutMode": "resize"
     },
     "web": {
       "output": "static",

@@ -4,8 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import useItemsStore from "@/store/useItemsStore";
 import { useIndexMenu } from "@/hooks/useIndexMenu";
-import { IndexListHeader } from "@/components/IndexListHeader";
-import { showToast } from "@/components/Toast";
+import { IndexListHeader } from "@/components/ListHeader/IndexListHeader";
+import { showToast } from "@/components/General/Toast";
 import { getMenuImageUrl } from "@/lib/cloudinary";
 
 export default function App() {

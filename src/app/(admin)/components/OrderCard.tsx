@@ -1,4 +1,4 @@
-import { AdminOrder } from "@/services/adminOrders";
+import { AdminOrder } from "@/app/(admin)/services/adminOrders";
 import { User } from "lucide-react-native";
 import { Text, View } from "react-native";
 import OrderItemRow  from "./OrderItemRow";
