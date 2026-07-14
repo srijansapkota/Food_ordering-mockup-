@@ -1,17 +1,23 @@
-import { ActivityIndicator, FlatList, Image, Pressable, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LogOut, User } from 'lucide-react-native';
-import  useAdminOrders  from './hooks/useAdminOrders';
-import { NotificationBell } from '@/components/General/NotificationBell';
-import useAuthStore from '@/store/useAuthStore';  
-import OrderCard from './components/OrderCard';
-
-
-
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { LogOut } from "lucide-react-native";
+import useAdminOrders from "../../admin/hooks/useAdminOrders";
+import useAuthStore from "@/store/useAuthStore";
+import OrderCard from "../../admin/components/OrderCard";
+    
 export default function AdminOrdersScreen() {
-  const { orders, loading, updatingKey, markDelivered, cancelItem } = useAdminOrders();
-  const liveOrders = orders.filter((order)=>order.items.some((item)=>item.status === 'pending'))
-
+  const { orders, loading, updatingKey, markDelivered, cancelItem } =
+    useAdminOrders();
+  const liveOrders = orders.filter((order) =>
+    order.items.some((item) => item.status === "pending"),
+  );
 
   if (loading) {
     return (
@@ -34,11 +40,13 @@ export default function AdminOrdersScreen() {
         </Text>
       </View>
       <View className="flex-row items-center justify-between px-5 pt-4 pb-2 mb-4 ">
-        <Text className="text-2xl font-bold text-[#895100] tracking-tight">Orders</Text>
+        <Text className="text-2xl font-bold text-[#895100] tracking-tight">
+          Orders
+        </Text>
         <View>
-        <Pressable onPress={() => useAuthStore.getState().signout()}>
-          <LogOut size={24} color="#895100" />
-        </Pressable>
+          <Pressable onPress={() => useAuthStore.getState().signout()}>
+            <LogOut size={24} color="#895100" />
+          </Pressable>
         </View>
       </View>
       <FlatList

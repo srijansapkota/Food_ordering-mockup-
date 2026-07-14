@@ -1,4 +1,12 @@
-import { Text, View, TextInput, Pressable, ScrollView, Modal, ActivityIndicator, Platform } from "react-native";
+
+import {
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 type EditProfileModalProps = {
@@ -28,25 +36,38 @@ export const EditProfileModal = ({
   isSubmitting,
   onSubmit,
 }: EditProfileModalProps) => {
-  return (
-    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
-    <Modal
-      visible={isVisible}
-      onRequestClose={onClose}
-      animationType="slide"
-      transparent
-      statusBarTranslucent
-    >
-      <View className="flex-1 bg-black/50 justify-end">
-        <Pressable className="absolute inset-0" onPress={onClose} />
+  if (!isVisible) return null;
 
-        <View className="bg-white rounded-t-2xl max-h-[85%]">
+  return (
+    <View
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1000,
+        elevation: 1000,
+      }}
+      className="bg-black/50 justify-end"
+    >
+      <Pressable
+        style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+        onPress={onClose}
+      />
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={{ flex: 1, marginTop: 100 }}
+      >
+        <View style={{ width: "100%" }} className="bg-white rounded-t-2xl">
           <ScrollView
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ padding: 20, paddingBottom: 32 }}
+            contentContainerStyle={{ padding: 20 }}
             showsVerticalScrollIndicator={false}
           >
-            <Text className="text-lg font-semibold text-gray-900 mb-4">Edit Profile</Text>
+            <Text className="text-lg font-semibold text-gray-900 mb-4">
+              Edit Profile
+            </Text>
 
             <View className="mb-4">
               <Text className="text-xs text-gray-500 mb-1">Name</Text>
@@ -56,7 +77,9 @@ export const EditProfileModal = ({
                 onChangeText={setName}
                 placeholder="Your name"
               />
-              {errors.name ? <Text className="text-red-600 text-xs mt-1">{errors.name}</Text> : null}
+              {errors.name ? (
+                <Text className="text-red-600 text-xs mt-1">{errors.name}</Text>
+              ) : null}
             </View>
 
             <View className="mb-4">
@@ -67,7 +90,11 @@ export const EditProfileModal = ({
                 onChangeText={setAddress}
                 placeholder="Your address"
               />
-              {errors.address ? <Text className="text-red-600 text-xs mt-1">{errors.address}</Text> : null}
+              {errors.address ? (
+                <Text className="text-red-600 text-xs mt-1">
+                  {errors.address}
+                </Text>
+              ) : null}
             </View>
 
             <View className="mb-6">
@@ -80,7 +107,11 @@ export const EditProfileModal = ({
                 keyboardType="number-pad"
                 maxLength={10}
               />
-              {errors.phoneno ? <Text className="text-red-600 text-xs mt-1">{errors.phoneno}</Text> : null}
+              {errors.phoneno ? (
+                <Text className="text-red-600 text-xs mt-1">
+                  {errors.phoneno}
+                </Text>
+              ) : null}
             </View>
 
             <View className="flex-row gap-3">
@@ -91,22 +122,22 @@ export const EditProfileModal = ({
               >
                 <Text className="font-semibold text-gray-700">Cancel</Text>
               </Pressable>
-
               <Pressable
                 onPress={onSubmit}
                 disabled={isSubmitting}
                 className="flex-1 bg-[#895100] rounded-lg py-3 items-center flex-row justify-center gap-2"
               >
-                {isSubmitting ? <ActivityIndicator color="white" size="small" /> : null}
+                {isSubmitting ? (
+                  <ActivityIndicator color="white" size="small" />
+                ) : null}
                 <Text className="text-white font-semibold">
                   {isSubmitting ? "Saving..." : "Save"}
                 </Text>
               </Pressable>
             </View>
           </ScrollView>
-          </View>
         </View>
-        </Modal>
       </KeyboardAvoidingView>
+    </View>
   );
 };

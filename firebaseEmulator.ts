@@ -2,12 +2,12 @@ import { Platform } from 'react-native';
 import { getAuth, connectAuthEmulator } from '@react-native-firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from '@react-native-firebase/firestore';
 
-if (__DEV__) {
-  const LAN_IP = "192.168.1.112"
-  const host = LAN_IP
+// if (__DEV__) {
+//   const LAN_IP = "192.168.1.118"
+//   const host = LAN_IP
 
-  connectAuthEmulator(getAuth(), `http://${host}:9099`);
-  connectFirestoreEmulator(getFirestore(), host, 8080);
+//   connectAuthEmulator(getAuth(), `http://${host}:9099`);
+//   connectFirestoreEmulator(getFirestore(), host, 8080);
 
-  console.log(`🔥 Connected to Firebase emulators at ${host}`);
-}
+//   console.log(`🔥 Connected to Firebase emulators at ${host}`);
+// }

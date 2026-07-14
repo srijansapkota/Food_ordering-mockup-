@@ -51,7 +51,19 @@ const ProfileScreen = () => {
           <Text className="text-xl font-bold text-gray-900">{name}</Text>
           <Text className="text-sm text-gray-500 mt-1">{user?.email}</Text>
         </View>
-
+        <EditProfileModal
+          isVisible={editProfile.isVisible}
+          onClose={editProfile.close}
+          name={editProfile.name}
+          setName={editProfile.setName}
+          address={editProfile.address}
+          setAddress={editProfile.setAddress}
+          phoneno={editProfile.phoneno}
+          setPhoneno={editProfile.setPhoneno}
+          errors={editProfile.errors}
+          isSubmitting={editProfile.isSubmitting}
+          onSubmit={editProfile.submit}
+          />
        
         <View className="px-5 pt-2 pb-2">
           <View className="flex-row justify-between items-center mb-3">
@@ -134,19 +146,7 @@ const ProfileScreen = () => {
           </Pressable>
         </View>
       </ScrollView>
-      <EditProfileModal
-        isVisible={editProfile.isVisible}
-        onClose={editProfile.close}
-        name={editProfile.name}
-        setName={editProfile.setName}
-        address={editProfile.address}
-        setAddress={editProfile.setAddress}
-        phoneno={editProfile.phoneno}
-        setPhoneno={editProfile.setPhoneno}
-        errors={editProfile.errors}
-        isSubmitting={editProfile.isSubmitting}
-        onSubmit={editProfile.submit}
-        />
+    
     </SafeAreaView>
   );
  };

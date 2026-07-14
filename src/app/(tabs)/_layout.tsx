@@ -3,6 +3,7 @@ import { House, ClipboardList, ShoppingCart, User2 } from 'lucide-react-native';
 import useItemsStore from "@/store/useItemsStore";
 import { Text, View } from 'react-native';
 import { useCallback, useMemo } from 'react';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 export default function TabsLayout() {
   const items = useItemsStore((state) => state.items);
@@ -20,6 +21,7 @@ export default function TabsLayout() {
   useFocusEffect(onFocusPrune);
 
   return (
+        <KeyboardProvider>
     <Tabs screenOptions={{ tabBarActiveTintColor: '#895100' }}>
       <Tabs.Screen
         name="index"
@@ -66,6 +68,7 @@ export default function TabsLayout() {
         ),
       }}
        />
-    </Tabs>
+      </Tabs>
+        </KeyboardProvider>
   );
 }

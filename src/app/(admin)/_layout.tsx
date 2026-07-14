@@ -1,5 +1,5 @@
 import useAuthStore from '@/store/useAuthStore';
-import { Redirect, Stack, Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import { History, Home } from 'lucide-react-native';
 
 export default function AdminLayout() {

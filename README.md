@@ -1,1 +1,1 @@
-To run this app do npm install and then npm start.
+To run this app do npm install and then npm start.  
