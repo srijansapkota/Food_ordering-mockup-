@@ -44,3 +44,6 @@ example
 
 firebaseConfig.js
 seed
+.vscode
+.expo
+scripts
